@@ -42,6 +42,7 @@ if sys.platform == 'digiSarOS':
 ANALOG_CHANNEL_CONTROLS = ['current', 'voltage']
 DIGITAL_CHANNELS = ['D0', 'D1']
 DIGITAL_IO_OPTIONS = ['on', 'off']
+ANALOG_CHANNEL = 'voltage'
 
 
 def cli(command="gpio"):
@@ -148,13 +149,28 @@ def string_to_cli_out(lines):
 
 
 if __name__ == "__main__":
+    args = sys.argv
+    for arg in args:
+        if arg.startswith('-H') or arg.startswith('-?'):
+            print """Usage: python ex_gpio.py\nArgs (optional):\n-[H|?] prints help\n-A[voltage|current]\n-L<number of loops>\n-W<wait seconds between loops>"""
+            sys.exit(0)
+        elif arg.startswith('-A'):
+            ANALOG_CHANNEL = arg[2:]
+        elif arg.startswith('-L'):
+            LOOPS = int(arg[2:])
+        elif arg.startswith('-W'):
+            WAIT = int(arg[2:])
+
+    print "Setup:"
+    print "Analog Channel: " + ANALOG_CHANNEL
+    print "Number of loops: " + str(LOOPS)
+    print "Wait time (secs): " + str(WAIT)
+
     for loop in range(LOOPS):
         print "======================"
         print "Loop: " + str(loop)
         print "----------------------"
-        string_to_cli_out(get_analog_io('voltage'))
-        print "----------------------"
-        string_to_cli_out(get_analog_io('current'))
+        string_to_cli_out(get_analog_io(ANALOG_CHANNEL))
         print "----------------------"
         string_to_cli_out(get_digital_io())
         sleep(WAIT)

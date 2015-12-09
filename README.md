@@ -2,6 +2,7 @@
 
 This repository contains examples for the [Digi](http://www.digi.com/) line of TransPort devices.
 
+Due to the TransPort's limitation to only support 8 characters in the filename and 3 characters in the extension, all examples will have a valid filename to be directly placed on a TransPort device.
 
 ## Platform Specific Info
 
