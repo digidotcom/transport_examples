@@ -32,7 +32,7 @@ from time import sleep
 
 # Number of display loops
 LOOPS = 10
-WAIT = 2 # seconds
+WAIT = 2  # seconds
 
 # Your python code can detect when it is running on a Transport product by
 # importing the 'sys' module, then testing the sys.platform variable like this:
@@ -152,7 +152,13 @@ if __name__ == "__main__":
     args = sys.argv
     for arg in args:
         if arg.startswith('-H') or arg.startswith('-?'):
-            print """Usage: python ex_gpio.py\nArgs (optional):\n-[H|?] prints help\n-A[voltage|current]\n-L<number of loops>\n-W<wait seconds between loops>"""
+            print """
+Usage: python ex_gpio.py
+Args (optional):
+-[H|?] prints help
+-A[voltage|current]
+-L<number of loops>
+-W<wait seconds between loops>"""
             sys.exit(0)
         elif arg.startswith('-A'):
             ANALOG_CHANNEL = arg[2:]
