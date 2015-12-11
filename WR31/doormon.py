@@ -113,15 +113,17 @@ class DoorMonitor(object):
     def switch_status(cls):
         """
         Reads line status and sends an alert if the status is different
+        :return status: str, Door status, "OPEN" or "CLOSED"
         """
         response = cli_command("gpio dio")
         if "D1: DOUT=OFF, DIN=LOW" in response:
             if not "D0: DOUT=ON" in response:
                 # Door is closed
-                return "CLOSED"
+                status = "CLOSED"
         else:
             # Door is open
-            return "OPEN"
+            status = "OPEN"
+        return status
 
     def send_alert(self, text):
         """
