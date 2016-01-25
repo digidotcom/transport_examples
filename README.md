@@ -1,7 +1,6 @@
 Digi TransPort Python Scripting Examples
 =========================================
 
-
 This repository contains examples for the [Digi](http://www.digi.com/) line of TransPort devices.
 
 Due to the TransPort's limitation to only support 8 characters in the filename and 3 characters in the extension, all examples will have a valid filename to be directly placed on a TransPort device.
@@ -15,11 +14,11 @@ Support and Contributing
 Contributions to the project are very welcome. Please submit any issues you
 find to the [GitHub issue tracker][issues]. If you have a change you would like
 to have included in the application, please submit a pull request against the
-`develop` branch.
+[`development` branch][development].
 
-Application code on the `master` branch is of release quality and has been
+Application code on the [`master` branch][master] is of release quality and has been
 code-reviewed and quality tested at the time of release. Any code added to the
-repository between official releases can be found on the `develop` branch; code
+repository between official releases can be found on the [`development` branch][development]; code
 on this branch has been code-reviewed but has not necessarily been fully
 tested - use this at your own discretion.
 
@@ -29,4 +28,5 @@ This software is open-source software. Copyright Digi International, 2015.
 This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
 
 [issues]: https://github.com/digidotcom/transport_examples/issues
-
+[master]: https://github.com/digidotcom/transport_examples
+[development]: https://github.com/digidotcom/transport_examples/tree/development
