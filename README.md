@@ -9,6 +9,10 @@ Platform Specific Info
 -------------------------
 Some examples are platform specific, they will be labeled with the version of the TransPort, (e.g. WR11, WR21, WR31, WR41, WR44, etc.). The name of the folder within the project will include WR## in the name, for example `WR31/ex_gpio.py`. 
 
+Example Descriptions
+------------------------
+`read_sim.py` - Application prints a statement if the current, active SIM ICCID is the same or different as the previous ICCID.
+
 Support and Contributing
 ------------------------
 Contributions to the project are very welcome. Please submit any issues you

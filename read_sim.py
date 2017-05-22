@@ -11,7 +11,8 @@
 ############################################################################
 
 """
-Application prints if current, active SIM ICCID is the same as the previous.
+Application prints a statement if the current, active SIM ICCID is the same
+or different as the previous ICCID.
 
 Flow:       Read the active SIM on boot to determine if it is different from
             the previous boot. On first boot, it will report that it is the
@@ -21,7 +22,8 @@ Options:    When a non-matching ICCID is found, an alert, data point or some
             other action should be added. The placeholder is marked as:
             ---- DO SOMETHING HERE ---
 
-Usage:      The script can be run manually via the command-line (CLI), as:
+Usage:      The script should be uploaded and then can be run manually via the
+            command-line (CLI), as:
             > python read_sim.py
             It should updated with an appropriate action and then set to run
             on boot.
