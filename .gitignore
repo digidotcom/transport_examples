@@ -3,3 +3,4 @@ venv/
 *.csv
 *.log
 iplist*.txt
+*.zip

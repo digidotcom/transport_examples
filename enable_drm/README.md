@@ -1,5 +1,5 @@
 # Enable Digi Remote Manager (DRM) via SSH
-The purpose of this application is to enable (Digi Remote Manager)[https://my.devicecloud.com/] on a single TransPort router or to a list of TransPort routers from a configuration file.
+The purpose of this application is to enable [Digi Remote Manager](https://my.devicecloud.com/) on a single TransPort router or to a list of TransPort routers from a configuration file.
 
 Upon completion of each update, the router is rebooted and the DRM Device Id is added to a CSV file for uploading to DRM via the Bulk Add feature.
 
