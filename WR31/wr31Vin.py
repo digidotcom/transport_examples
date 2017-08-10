@@ -57,11 +57,16 @@ def convert_voltage(rawV):
     return rawV / (float(inputImpedance)/(float(resistorVal)+float(inputImpedance)))
 
 
-def read_gpio():
+def cli(command):
     s = sarcli.open()
-    s.write('gpio ain')
+    s.write(command)
     resp = s.read()
     s.close()  # Close sarcli session
+    return resp
+
+
+def read_gpio():
+    resp = cli('gpio ain')
     i = resp.find('voltage=')
     j = resp.find('V')
     vdc = float(resp[i+8:j-1])

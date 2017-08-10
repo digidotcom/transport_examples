@@ -1,0 +1,6 @@
+venv/
+*.pyc
+*.csv
+*.log
+iplist*.txt
+*.zip
