@@ -29,6 +29,7 @@ IP_FILENAME = "iplist.txt"
 PASSWORD = "password"
 SSH_TIMEOUT = 20  # seconds
 USERNAME = "username"
+SSH_PORT = 22
 
 CMD_ENABLE_DRM = "cloud 0 clientconn ON"
 CMD_SET_SERVER = "cloud 0 server %s" % DRM_HOSTNAME
@@ -64,7 +65,7 @@ def connect_to_router(ip_addr):
     logging.info("Connecting to %s..." % ip_addr)
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(ip_addr, username=USERNAME, password=PASSWORD, timeout=SSH_TIMEOUT)
+    ssh.connect(hostname=ip_addr, port=SSH_PORT, username=USERNAME, password=PASSWORD, timeout=SSH_TIMEOUT)
     return ssh
 
 
