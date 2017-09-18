@@ -150,6 +150,62 @@ def log_status(ip_addr, devId, status='Success', error_msg=None):
     pass
 
 
+def is_valid_ipv4_address(address):
+    try:
+        socket.inet_pton(socket.AF_INET, address)
+    except AttributeError:  # no inet_pton here, sorry
+        try:
+            socket.inet_aton(address)
+        except socket.error:
+            return False
+        return address.count('.') == 3
+    except socket.error:  # not a valid address
+        return False
+
+    return True
+
+
+def is_valid_ipv6_address(address):
+    try:
+        socket.inet_pton(socket.AF_INET6, address)
+    except socket.error:  # not a valid address
+        return False
+    return True
+
+
+def prompt(text, default=None, options=None, data_type="string"):
+    # logging.debug("prompt: Text: {0} || Default: {1} || Options: {2} || DataType: {3}".format(text, default, options, data_type))
+    value = None
+    if options and type(options) is not list:
+        raise Exception("prompt: options parameter must be a list")
+
+    if options:
+        text = "{0} ({1})".format(text, "/".join([str(opt) for opt in options]))
+    if default:
+        text = "{0} [{1}]".format(text, str(default))
+    # logging.trace("prompt: formatted text: {}".format(text))
+
+    if default is not None and options is None:
+        # logging.trace("prompt: default and not options")
+        value = raw_input(text)
+        value = value or default
+    elif options is not None and default is not None and data_type != 'boolean':
+        # logging.trace("prompt: options and default and data_type != 'boolean'")
+        while value not in options:
+            value = validate_data_type(data_type, raw_input(text))
+            if not value:
+                value = default
+    elif options is not None and default is not None and data_type == 'boolean':
+        # logging.trace("prompt: options and default and data_type == 'boolean'")
+        value = validate_data_type(data_type, (raw_input(text) or default))
+    else:
+        # logging.trace("prompt: else")
+        while not value:
+            value = validate_data_type(data_type, raw_input(text))
+
+    return value
+
+
 if __name__ == "__main__":
     now = strftime("%Y%m%d_%H%M%S", localtime())
     logfile = 'results_{}_{}'.format(sys.argv[0].replace('.py', ''), now)
@@ -162,32 +218,43 @@ if __name__ == "__main__":
     logging.info(HR)
 
     try:
+        # Should application retry single IP
+        continuous = False
         reboot = True
-        if len(sys.argv) > 1:
+        if len(sys.argv) > 1 and is_valid_ipv4_address(sys.argv[1]):
             ip_addrs.append(sys.argv[1])
         else:
             ip_addrs = add_devices_from_file(IP_FILENAME)
 
-        if len(sys.argv) > 2 and sys.argv[2] == 'noreboot':
+        if len(sys.argv) > 2 and ('noreboot' in sys.argv):
             reboot = False
 
-        first = True
-        for ip in ip_addrs:
-            if not first:
-                logging.info(HR)
-            try:
-                first = False
-                cmd_resp = config_router(ip, reboot)
-                devId = parse_hw_info(cmd_resp)
-                log_to_csv(csv_filename, devId)
-            except socket.error as msg:
-                if str(msg) == 'timed out':
-                    msg = "SSH connection timed out"
-                logging.error(msg + ' for %s' % ip)
-                continue
-            except paramiko.ssh_exception.AuthenticationException as auth_err:
-                logging.error(auth_err + ' for %s' % ip)
-                continue
+        if len(sys.argv) > 2 and ('continuous' in sys.argv):
+            continuous = True
+
+        reloop = True
+        while reloop:
+            first = True
+            for ip in ip_addrs:
+                if not first:
+                    logging.info(HR)
+                try:
+                    first = False
+                    cmd_resp = config_router(ip, reboot)
+                    devId = parse_hw_info(cmd_resp)
+                    log_to_csv(csv_filename, devId)
+                except socket.error as msg:
+                    if str(msg) == 'timed out':
+                        msg = "SSH connection timed out"
+                    logging.error(msg + ' for %s' % ip)
+                    continue
+                except paramiko.ssh_exception.AuthenticationException as auth_err:
+                    logging.error(auth_err + ' for %s' % ip)
+                    continue
+                if continuous:
+                    prompt('Type Enter to continue', default="Enter")
+            if not continuous:
+                reloop = False
     except Exception as err:
         csvfile.close()
         logging.error(traceback.print_exc())
