@@ -22,3 +22,9 @@ Example file:
 3.3.3.3
 4.4.4.4
 ```
+
+## Options
+The script will take 3 parameters. The first parameter must be an IP Address.
+1) An IPv4 Address after the script name, as noted above
+2) An option to not reboot each unit on success, `--noreboot`
+3) An option to run against the same IP Address from option #1, `--continuous`

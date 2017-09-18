@@ -20,7 +20,6 @@ import traceback
 
 from time import gmtime, localtime, strftime
 
-
 CSV_FIELDNAMES = ['devId', 'installCode']
 DEVID = '00000000-00000000-00000000-00000000'
 DRM_HOSTNAME = "my.devicecloud.com"
@@ -221,16 +220,19 @@ if __name__ == "__main__":
         # Should application retry single IP
         continuous = False
         reboot = True
-        if len(sys.argv) > 1 and is_valid_ipv4_address(sys.argv[1]):
-            ip_addrs.append(sys.argv[1])
-        else:
-            ip_addrs = add_devices_from_file(IP_FILENAME)
+        if len(sys.argv) > 1:
+            if is_valid_ipv4_address(sys.argv[1]):
+                ip_addrs.append(sys.argv[1])
+            else:
+                ip_addrs = add_devices_from_file(IP_FILENAME)
 
-        if len(sys.argv) > 2 and ('noreboot' in sys.argv):
-            reboot = False
+            if '--noreboot' in sys.argv:
+                reboot = False
+                logging.debug('No reboot enabled')
 
-        if len(sys.argv) > 2 and ('continuous' in sys.argv):
-            continuous = True
+            if '--continuous' in sys.argv:
+                continuous = True
+                logging.debug('Continuous script enabled')
 
         reloop = True
         while reloop:
@@ -246,17 +248,19 @@ if __name__ == "__main__":
                 except socket.error as msg:
                     if str(msg) == 'timed out':
                         msg = "SSH connection timed out"
-                    logging.error(msg + ' for %s' % ip)
+                    logging.error('%s for %s' % (msg, ip))
                     continue
                 except paramiko.ssh_exception.AuthenticationException as auth_err:
-                    logging.error(auth_err + ' for %s' % ip)
+                    logging.error('%s for %s' % (auth_err, ip))
                     continue
-                if continuous:
-                    prompt('Type Enter to continue', default="Enter")
+            if continuous:
+                prompt('Type Enter to continue', default="Enter")
+
             if not continuous:
                 reloop = False
     except Exception as err:
-        csvfile.close()
+        if csvfile:
+            csvfile.close()
         logging.error(traceback.print_exc())
 
     logging.info(HR)
