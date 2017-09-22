@@ -220,19 +220,20 @@ if __name__ == "__main__":
         # Should application retry single IP
         continuous = False
         reboot = True
-        if len(sys.argv) > 1:
-            if is_valid_ipv4_address(sys.argv[1]):
-                ip_addrs.append(sys.argv[1])
-            else:
-                ip_addrs = add_devices_from_file(IP_FILENAME)
+        if len(sys.argv) > 1 and is_valid_ipv4_address(sys.argv[1]):
+            ip_addrs.append(sys.argv[1])
+        else:
+            ip_addrs = add_devices_from_file(IP_FILENAME)
 
+        if len(sys.argv) > 1:
             if '--noreboot' in sys.argv:
                 reboot = False
-                logging.debug('No reboot enabled')
+                logging.info('No reboot enabled')
 
             if '--continuous' in sys.argv:
                 continuous = True
-                logging.debug('Continuous script enabled')
+                logging.info('Continuous script enabled')
+            logging.info(HR)
 
         reloop = True
         while reloop:
