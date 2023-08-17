@@ -71,8 +71,8 @@ def cli_command(cmd):
 
 def get_gps_lat_long(at_mibs_gps):
     stats_dict = {}
-    stats_dict["gps_longitude"] = cli_parse(answer, "gps.0.stats.longitude", True)
-    stats_dict["gps_latitude"] = cli_parse(answer, "gps.0.stats.latitude", True)
+    stats_dict["gps_longitude"] = cli_parse(at_mibs_gps, "gps.0.stats.longitude", True)
+    stats_dict["gps_latitude"] = cli_parse(at_mibs_gps, "gps.0.stats.latitude", True)
     # stats_dict["gps_satellites"] = cli_parse(answer, "gps.0.stats.satellites", True)
     # stats_dict["gps_course"] = cli_parse(answer, "gps.0.stats.course", True)
     # stats_dict["gps_utctime"] = cli_parse(answer, "gps.0.stats.utctime", True)
