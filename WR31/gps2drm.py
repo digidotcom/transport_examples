@@ -114,13 +114,17 @@ if __name__ == "__main__":
     try:
         args = sys.argv
         print(args)
-        sleep_time = int(args[1]) if args[1] else 180
-        at_mibs_gps = cli_command("at\mibs=gps")
-        lat_long = get_gps_lat_long(at_mibs_gps)
-        print(lat_long)
-
-        ret = idigidata.register_callback("reportgps", report)
-
+        if len(args) > 1:
+            sleep_time = int(args[1])
+        else:
+            sleep_time = 180
+        try:
+            ret = idigidata.register_callback("reportgps", report)
+        except Exception as err:
+            print('Error registering callback:')
+            print(err)
+            print('reboot device to fix register callback')
+            print('application will now continue without the callback active')
         # now spin forever so the callback stays active
         while True:
             send_up_data()
