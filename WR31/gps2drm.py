@@ -100,7 +100,7 @@ def send_up_data():
     # report current location in geojson. Replace the literals ('-100.3046875', etc) with
     # your lat long and you're good to go
     xml = '''<DataPoint>
-      <data>{"type": "Point", "coordinates": {0}</data>
+      <data>{0}</data>
       <streamId>geolocation</streamId>
     </DataPoint>'''.format(get_gps_lat_long(cli_command("at\mibs=gps")))
     idigidata.send_to_idigi(xml, path)
