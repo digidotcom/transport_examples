@@ -130,4 +130,6 @@ if __name__ == "__main__":
             send_up_data()
             time.sleep(sleep_time)
     except Exception as e:
+        print('EXCEPTION:')
+        print(e)
         help(e)
